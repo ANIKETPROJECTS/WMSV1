@@ -12,3 +12,15 @@ export function useDashboardStats() {
     refetchInterval: 30000, // Refresh every 30s
   });
 }
+
+export function useMISStats() {
+  return useQuery({
+    queryKey: [api.stats.mis.path],
+    queryFn: async () => {
+      const res = await fetch(api.stats.mis.path, { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch MIS stats");
+      return api.stats.mis.responses[200].parse(await res.json());
+    },
+    refetchInterval: 60000, // Refresh every 1m
+  });
+}

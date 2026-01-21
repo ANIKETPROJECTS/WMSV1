@@ -1,93 +1,246 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Download, FileBarChart, Calendar, Printer } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Download, 
+  TrendingUp, 
+  TrendingDown, 
+  ArrowDownToLine, 
+  ArrowUpFromLine, 
+  Package, 
+  AlertCircle,
+  Clock,
+  BarChart3,
+  PieChart as PieChartIcon
+} from "lucide-react";
+import { useMISStats } from "@/hooks/use-stats";
+import { Skeleton } from "@/components/ui/skeleton";
+import { StatCard } from "@/components/StatCard";
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend
+} from "recharts";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Reports() {
+  const { data: stats, isLoading } = useMISStats();
   const { toast } = useToast();
 
-  const handleExport = (reportName: string) => {
+  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+
+  const handleExport = (type: string) => {
     toast({
       title: "Export Started",
-      description: `Downloading ${reportName}...`,
+      description: `Generating ${type} report...`,
     });
   };
 
-  const reports = [
-    { 
-      title: "Inventory Stock Report", 
-      desc: "Detailed list of all items, locations, and current stock levels.",
-      type: "Daily"
-    },
-    { 
-      title: "Low Stock Alert Report", 
-      desc: "Items below minimum threshold requiring re-ordering.",
-      type: "Alert"
-    },
-    { 
-      title: "Inward Movement Log", 
-      desc: "Complete history of all GRN entries for the selected period.",
-      type: "Weekly"
-    },
-    { 
-      title: "Outward Dispatch Log", 
-      desc: "Record of all customer shipments and delivery statuses.",
-      type: "Weekly"
-    },
-    { 
-      title: "Inventory Valuation", 
-      desc: "Financial report of current inventory asset value.",
-      type: "Monthly"
-    },
-  ];
+  if (isLoading || !stats) {
+    return (
+      <Layout>
+        <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-32 rounded-xl" />)}
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Skeleton className="h-[400px] rounded-xl" />
+            <Skeleton className="h-[400px] rounded-xl" />
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-display font-bold">MIS Reports</h1>
-          <p className="text-muted-foreground">Generate and export system reports</p>
+          <h1 className="text-3xl font-display font-bold">MIS Reports & Analytics</h1>
+          <p className="text-muted-foreground">Comprehensive overview of warehouse performance</p>
         </div>
-        <Button variant="outline" className="gap-2">
-          <Calendar className="w-4 h-4" /> Select Period
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => handleExport('PDF')} className="gap-2">
+            <Download className="w-4 h-4" /> Export PDF
+          </Button>
+          <Button onClick={() => handleExport('CSV')} className="gap-2">
+            <Download className="w-4 h-4" /> Export CSV
+          </Button>
+        </div>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {reports.map((report, idx) => (
-          <Card key={idx} className="group hover:border-primary/50 transition-colors">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div className="p-2 bg-muted rounded-lg group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                  <FileBarChart className="w-6 h-6" />
-                </div>
-                <span className="text-xs font-medium px-2 py-1 rounded bg-secondary">
-                  {report.type}
-                </span>
-              </div>
-              <CardTitle className="mt-4">{report.title}</CardTitle>
-              <CardDescription>{report.desc}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2">
-                <Button 
-                  className="flex-1 gap-2" 
-                  onClick={() => handleExport(report.title)}
-                >
-                  <Download className="w-4 h-4" /> Export CSV
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="icon"
-                  onClick={() => handleExport(`${report.title} (PDF)`)}
-                >
-                  <Printer className="w-4 h-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <StatCard
+          title="Total Inward Today"
+          value={`₹${stats.dailyStats.totalInwardValuation.toLocaleString()}`}
+          icon={ArrowDownToLine}
+          color="green"
+          trend="+12% from yesterday"
+          trendUp={true}
+        />
+        <StatCard
+          title="Total Outward Today"
+          value={`₹${stats.dailyStats.totalOutwardValuation.toLocaleString()}`}
+          icon={ArrowUpFromLine}
+          color="blue"
+          trend="+5% from yesterday"
+          trendUp={true}
+        />
+        <StatCard
+          title="Top Dispatched Item"
+          value={stats.dailyStats.topItem}
+          icon={TrendingUp}
+          color="purple"
+        />
+        <StatCard
+          title="Dead Stock Count"
+          value={stats.dailyStats.deadStockCount}
+          icon={AlertCircle}
+          color="orange"
+          trend="No movement > 90 days"
+        />
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 mb-8">
+        <Card className="shadow-lg border-border/50">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-primary" />
+              Movement Analysis
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[350px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={[...stats.movementAnalysis.fastMoving.map(i => ({ ...i, type: 'Fast' })), ...stats.movementAnalysis.slowMoving.map(i => ({ ...i, type: 'Slow' }))]}>
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                  <XAxis dataKey="name" fontSize={10} angle={-45} textAnchor="end" height={80} />
+                  <YAxis fontSize={12} />
+                  <Tooltip />
+                  <Bar dataKey="movements" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg border-border/50">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <PieChartIcon className="w-5 h-5 text-primary" />
+              Valuation by Category
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[350px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={stats.valuationReport}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={5}
+                    dataKey="value"
+                    nameKey="category"
+                  >
+                    {stats.valuationReport.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value: number) => `₹${value.toLocaleString()}`} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="shadow-lg border-border/50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-orange-500" />
+              Dead Stock Report
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Item Name</TableHead>
+                  <TableHead>Last Movement</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {stats.movementAnalysis.deadStock.length > 0 ? (
+                  stats.movementAnalysis.deadStock.map((item, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="font-medium">{item.name}</TableCell>
+                      <TableCell className="text-muted-foreground flex items-center gap-2">
+                        <Clock className="w-3 h-3" />
+                        {item.lastMoved === 'Never' ? 'Never' : new Date(item.lastMoved).toLocaleDateString()}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={2} className="text-center text-muted-foreground py-8">
+                      No dead stock identified
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg border-border/50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Package className="w-5 h-5 text-blue-500" />
+              Inventory Valuation Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Item Name</TableHead>
+                  <TableHead>Stock</TableHead>
+                  <TableHead className="text-right">Value (₹)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {stats.inventorySummary.map((item, i) => (
+                  <TableRow key={i}>
+                    <TableCell className="font-medium">{item.name}</TableCell>
+                    <TableCell>{item.stock}</TableCell>
+                    <TableCell className="text-right font-mono">₹{item.value.toLocaleString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );
