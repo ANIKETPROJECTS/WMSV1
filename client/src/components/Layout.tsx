@@ -35,14 +35,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const NavContent = () => (
-    <div className="flex flex-col h-full bg-slate-900 text-white">
-      <div className="p-6 flex items-center gap-3 border-b border-white/10">
+    <div className="flex flex-col h-full bg-white border-r border-border">
+      <div className="p-6 flex items-center gap-3 border-b border-border">
         <div className="p-2 bg-primary rounded-lg">
           <Box className="w-6 h-6 text-primary-foreground" />
         </div>
         <div>
-          <h1 className="font-display font-bold text-xl tracking-tight">NexWMS</h1>
-          <p className="text-xs text-white/50">Warehouse System</p>
+          <h1 className="font-display font-bold text-xl tracking-tight text-foreground">NexWMS</h1>
+          <p className="text-xs text-muted-foreground">Warehouse System</p>
         </div>
       </div>
       
@@ -53,8 +53,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link key={item.href} href={item.href} className={`
               flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group
               ${isActive 
-                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 font-medium" 
-                : "text-white/70 hover:bg-white/10 hover:text-white"
+                ? "bg-primary/10 text-primary font-medium" 
+                : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               }
             `}>
               <item.icon className={`w-5 h-5 ${isActive ? "" : "opacity-70 group-hover:opacity-100"}`} />
@@ -64,10 +64,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         })}
       </div>
 
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-border">
         <Button 
           variant="ghost" 
-          className="w-full justify-start text-white/70 hover:text-white hover:bg-white/10"
+          className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted/50"
           onClick={handleLogout}
         >
           <LogOut className="w-5 h-5 mr-3" />
