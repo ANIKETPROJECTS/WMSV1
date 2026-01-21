@@ -1,0 +1,127 @@
+Create a full responsive Warehouse Management System (WMS) UI demo using React + Vite + Tailwind CSS.
+
+Goal:
+Build ONLY these 4 sections:
+1) Inward
+2) Outward
+3) Inventory Management
+4) MIS (Reports Dashboard)
+
+Requirements:
+- This is UI-first with dummy data (no backend needed).
+- Use modern clean UI design.
+- Must be fully responsive (desktop + mobile).
+- Use React Router for navigation.
+- Use reusable components.
+
+Pages / Modules:
+
+1) Login Page (Dummy)
+- Warehouse name/logo
+- Username + password
+- Login button
+- On click login, redirect to dashboard (no auth needed)
+
+2) Main Layout
+- Left sidebar (desktop)
+- Bottom navigation (mobile)
+- Top bar with warehouse name + profile icon
+- Sidebar menu:
+  - Dashboard
+  - Inward
+  - Outward
+  - Inventory
+  - MIS Reports
+
+3) Dashboard Page
+- Summary cards:
+  - Total Inward Today
+  - Total Outward Today
+  - Total Stock Items
+  - Low Stock Alerts
+- Recent activity timeline with dummy data (inward/outward actions)
+
+4) Inward Module
+- Table view for inward entries:
+  - GRN No
+  - Supplier
+  - Item Count
+  - Date
+  - Status (Received / QC Pending / Stored)
+- Search bar
+- Filter dropdown by status
+- "Add Inward Entry" button opens modal form:
+  - Supplier name
+  - Items list (dummy add item fields)
+  - Quantity
+  - Save (adds to local state and updates table)
+
+5) Outward Module
+- Table view:
+  - Dispatch No
+  - Customer
+  - Items
+  - Date
+  - Status (Packed / Dispatched / Delivered)
+- Search + Filter
+- "Create Outward Dispatch" modal form:
+  - Customer name
+  - Select items from Inventory (dummy dropdown)
+  - Quantity
+  - Save and update local state
+
+6) Inventory Module
+- Table view:
+  - SKU
+  - Product Name
+  - Category
+  - Location (Rack/Bin)
+  - Available Qty
+  - Min Qty
+  - Status badge (In Stock / Low Stock / Out of Stock)
+- Search bar
+- Filter by stock status
+- "Add Item" modal:
+  - SKU
+  - Name
+  - Location
+  - Qty
+  - Min Qty
+- On inward/outward, inventory should update automatically (dummy local state update).
+
+7) MIS Reports Module
+- Report cards (dummy stats):
+  - Inward this week
+  - Outward this week
+  - Stock valuation estimate
+  - Top 5 moving items
+- Add simple charts using Recharts:
+  - Bar chart: Inward vs Outward (weekly)
+  - Pie chart: Inventory by category
+- Export button (just downloads JSON or prints "Export coming soon")
+
+UI/UX:
+- Use Tailwind CSS
+- Use icons from lucide-react
+- Use badges, modals, cards, tables
+- Add toast notifications (e.g., using react-hot-toast) on add actions
+- Keep code clean and modular:
+  - components/
+  - pages/
+  - data/ (dummy seed data)
+  - layout/ (Sidebar + Navbar)
+
+Dummy Data:
+- Preload with:
+  - 10 inward entries
+  - 10 outward entries
+  - 20 inventory items
+- Use realistic dummy names and SKUs.
+
+Deliverable:
+- Provide full Replit-ready code structure
+- Ensure app runs instantly with `npm install` and `npm run dev`
+- Include proper routing and responsive layout
+
+Optional Nice Touch:
+- Add dark mode toggle in navbar.
