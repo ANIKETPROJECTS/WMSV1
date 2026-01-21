@@ -12,6 +12,13 @@ import {
   type InventoryStats
 } from "@shared/schema";
 import { eq, desc, sql, sum, and, gte, lt } from "drizzle-orm";
+import { 
+  mockInventory, 
+  mockInward, 
+  mockOutward, 
+  mockDashboardStats, 
+  mockMISStats 
+} from "./mockData";
 
 export interface IStorage {
   // Inventory
@@ -30,15 +37,20 @@ export interface IStorage {
 
   // Stats
   getDashboardStats(): Promise<any>;
+  getMISStats(): Promise<any>;
 }
 
 export class DatabaseStorage implements IStorage {
+  private isNetlify = !!process.env.NETLIFY;
+
   // Inventory
   async getInventoryItems(): Promise<InventoryItem[]> {
+    if (this.isNetlify) return mockInventory;
     return await db.select().from(inventoryItems).orderBy(desc(inventoryItems.createdAt));
   }
 
   async getInventoryItem(id: number): Promise<InventoryItem | undefined> {
+    if (this.isNetlify) return mockInventory.find(i => i.id === id);
     const [item] = await db.select().from(inventoryItems).where(eq(inventoryItems.id, id));
     return item;
   }
@@ -58,6 +70,7 @@ export class DatabaseStorage implements IStorage {
 
   // Inward
   async getInwardEntries(): Promise<InwardEntry[]> {
+    if (this.isNetlify) return mockInward;
     return await db.select().from(inwardEntries).orderBy(desc(inwardEntries.date));
   }
 
@@ -79,6 +92,7 @@ export class DatabaseStorage implements IStorage {
 
   // Outward
   async getOutwardEntries(): Promise<OutwardEntry[]> {
+    if (this.isNetlify) return mockOutward;
     return await db.select().from(outwardEntries).orderBy(desc(outwardEntries.date));
   }
 
@@ -100,6 +114,7 @@ export class DatabaseStorage implements IStorage {
 
   // Stats
   async getDashboardStats(): Promise<any> {
+    if (this.isNetlify) return mockDashboardStats;
     const allInventory = await this.getInventoryItems();
     
     const totalItems = allInventory.length;
@@ -137,6 +152,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getMISStats(): Promise<any> {
+    if (this.isNetlify) return mockMISStats;
     const allInventory = await this.getInventoryItems();
     const inward = await this.getInwardEntries();
     const outward = await this.getOutwardEntries();
