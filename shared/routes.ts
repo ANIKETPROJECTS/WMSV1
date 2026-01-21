@@ -113,6 +113,27 @@ export const api = {
         }),
       },
     },
+    mis: {
+      method: 'GET' as const,
+      path: '/api/stats/mis',
+      responses: {
+        200: z.object({
+          dailyStats: z.object({
+            totalInwardValuation: z.number(),
+            totalOutwardValuation: z.number(),
+            topItem: z.string(),
+            deadStockCount: z.number(),
+          }),
+          inventorySummary: z.array(z.object({ name: z.string(), stock: z.number(), value: z.number() })),
+          movementAnalysis: z.object({
+            fastMoving: z.array(z.object({ name: z.string(), movements: z.number() })),
+            slowMoving: z.array(z.object({ name: z.string(), movements: z.number() })),
+            deadStock: z.array(z.object({ name: z.string(), lastMoved: z.string() })),
+          }),
+          valuationReport: z.array(z.object({ category: z.string(), value: z.number() })),
+        }),
+      },
+    },
   },
 };
 

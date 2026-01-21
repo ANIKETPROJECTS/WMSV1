@@ -106,6 +106,11 @@ export async function registerRoutes(
     res.json(stats);
   });
 
+  app.get(api.stats.mis.path, async (req, res) => {
+    const stats = await storage.getMISStats();
+    res.json(stats);
+  });
+
   // Seed Data
   seedDatabase();
 

@@ -12,6 +12,7 @@ export const inventoryItems = pgTable("inventory_items", {
   location: text("location").notNull(), // Rack/Bin
   quantity: integer("quantity").notNull().default(0),
   minQuantity: integer("min_quantity").notNull().default(5),
+  lastMovedAt: timestamp("last_moved_at").defaultNow(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
