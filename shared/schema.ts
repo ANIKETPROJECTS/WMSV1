@@ -39,8 +39,12 @@ export const outwardEntries = pgTable("outward_entries", {
 // === SCHEMAS ===
 
 export const insertInventoryItemSchema = createInsertSchema(inventoryItems).omit({ id: true, createdAt: true });
-export const insertInwardEntrySchema = createInsertSchema(inwardEntries).omit({ id: true });
-export const insertOutwardEntrySchema = createInsertSchema(outwardEntries).omit({ id: true });
+export const insertInwardEntrySchema = createInsertSchema(inwardEntries, {
+  date: z.coerce.date(),
+}).omit({ id: true });
+export const insertOutwardEntrySchema = createInsertSchema(outwardEntries, {
+  date: z.coerce.date(),
+}).omit({ id: true });
 
 // === TYPES ===
 
