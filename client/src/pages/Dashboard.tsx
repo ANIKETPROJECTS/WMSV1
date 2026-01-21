@@ -146,7 +146,7 @@ export default function Dashboard() {
             <p className="text-muted-foreground">Estimated value of current stock on hand</p>
           </div>
           <div className="text-3xl font-bold font-mono text-primary">
-            ${stats.valuation.toLocaleString()}
+            ₹{stats.valuation.toLocaleString()}
           </div>
         </CardContent>
       </Card>
