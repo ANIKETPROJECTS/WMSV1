@@ -22,7 +22,7 @@ import {
 
 export interface IStorage {
   // Inventory
-  getInventoryItems(): Promise<InventoryItem[]>;
+  getInventoryItems(search?: string, status?: string): Promise<InventoryItem[]>;
   getInventoryItem(id: number): Promise<InventoryItem | undefined>;
   createInventoryItem(item: InsertInventoryItem): Promise<InventoryItem>;
   updateInventoryItem(id: number, updates: Partial<InsertInventoryItem>): Promise<InventoryItem>;
@@ -44,9 +44,32 @@ export class DatabaseStorage implements IStorage {
   private isNetlify = !!process.env.NETLIFY;
 
   // Inventory
-  async getInventoryItems(): Promise<InventoryItem[]> {
-    if (this.isNetlify) return mockInventory;
-    return await db.select().from(inventoryItems).orderBy(desc(inventoryItems.createdAt));
+  async getInventoryItems(search?: string, status?: string): Promise<InventoryItem[]> {
+    let items: InventoryItem[];
+    if (this.isNetlify) {
+      items = mockInventory;
+    } else {
+      items = await db.select().from(inventoryItems).orderBy(desc(inventoryItems.createdAt));
+    }
+
+    if (search) {
+      const lowerSearch = search.toLowerCase();
+      items = items.filter(item => 
+        item.name.toLowerCase().includes(lowerSearch) || 
+        item.sku.toLowerCase().includes(lowerSearch)
+      );
+    }
+
+    if (status) {
+      items = items.filter(item => {
+        if (status === 'out_of_stock') return item.quantity === 0;
+        if (status === 'low_stock') return item.quantity > 0 && item.quantity <= item.minQuantity;
+        if (status === 'in_stock') return item.quantity > item.minQuantity;
+        return true;
+      });
+    }
+
+    return items;
   }
 
   async getInventoryItem(id: number): Promise<InventoryItem | undefined> {

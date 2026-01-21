@@ -12,7 +12,9 @@ export async function registerRoutes(
   
   // Inventory Routes
   app.get(api.inventory.list.path, async (req, res) => {
-    const items = await storage.getInventoryItems();
+    const search = req.query.search as string | undefined;
+    const status = req.query.status as string | undefined;
+    const items = await storage.getInventoryItems(search, status);
     res.json(items);
   });
 
