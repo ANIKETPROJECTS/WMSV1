@@ -1,0 +1,108 @@
+8:26:32 PM: build-image version: efa9a2c8b92d443f700fd1ea32ecd88f75212cfc (noble-new-builds)
+8:26:32 PM: buildbot version: 8d0edf1d57efe8e54d6b6b12c54da32e6d71ab3b
+8:26:32 PM: Fetching cached dependencies
+8:26:32 PM: Failed to fetch cache, continuing with build
+8:26:32 PM: Starting to prepare the repo for build
+8:26:32 PM: No cached dependencies found. Cloning fresh repo
+8:26:32 PM: git clone --filter=blob:none https://github.com/ANIKETPROJECTS/WMSV1
+8:26:32 PM: Preparing Git Reference refs/heads/main
+8:26:34 PM: Starting to install dependencies
+8:26:34 PM: mise ~/.config/mise/config.toml tools: python@3.14.2
+8:26:34 PM: mise ~/.config/mise/config.toml tools: ruby@3.4.8
+8:26:34 PM: mise ~/.config/mise/config.toml tools: go@1.25.6
+8:26:34 PM: v20.20.0 is already installed.
+8:26:35 PM: Now using node v20.20.0 (npm v10.8.2)
+8:26:35 PM: Enabling Node.js Corepack
+8:26:35 PM: Started restoring cached build plugins
+8:26:35 PM: Finished restoring cached build plugins
+8:26:35 PM: Started restoring cached corepack dependencies
+8:26:35 PM: Finished restoring cached corepack dependencies
+8:26:35 PM: No npm workspaces detected
+8:26:35 PM: Started restoring cached node modules
+8:26:35 PM: Finished restoring cached node modules
+8:26:35 PM: Installing npm packages using npm version 10.8.2
+8:26:41 PM: added 477 packages in 6s
+8:26:41 PM: npm packages installed
+8:26:42 PM: Successfully installed dependencies
+8:26:42 PM: Detected 1 framework(s)
+8:26:42 PM: "vite" at version "7.3.0"
+8:26:42 PM: Starting build script
+8:26:43 PM: Section completed: initializing
+8:26:45 PM: ​
+8:26:45 PM: Netlify Build                                                 
+8:26:45 PM: ────────────────────────────────────────────────────────────────
+8:26:45 PM: ​
+8:26:45 PM: ❯ Version
+8:26:45 PM:   @netlify/build 35.5.10
+8:26:45 PM: ​
+8:26:45 PM: ❯ Flags
+8:26:45 PM:   accountId: 6926d61cc732b414194f7d3a
+8:26:45 PM:   baseRelDir: true
+8:26:45 PM:   buildId: 6970e91ec285ab0d3a423e4f
+8:26:45 PM:   deployId: 6970e91ec285ab0d3a423e51
+8:26:45 PM: ​
+8:26:45 PM: ❯ Current directory
+8:26:45 PM:   /opt/build/repo
+8:26:45 PM: ​
+8:26:45 PM: ❯ Config file
+8:26:45 PM:   /opt/build/repo/netlify.toml
+8:26:45 PM: ​
+8:26:45 PM: ❯ Context
+8:26:45 PM:   production
+8:26:45 PM: ​
+8:26:45 PM: build.command from netlify.toml                               
+8:26:45 PM: ────────────────────────────────────────────────────────────────
+8:26:45 PM: ​
+8:26:45 PM: $ npm run build
+8:26:45 PM: > rest-express@1.0.0 build
+8:26:45 PM: > tsx script/build.ts
+8:26:46 PM: building client...
+8:26:46 PM: vite v7.3.0 building client environment for production...
+8:26:46 PM: transforming...
+8:26:52 PM: ✓ 3280 modules transformed.
+8:26:53 PM: Starting post processing
+8:26:53 PM: Post processing done
+8:26:53 PM: Section completed: postprocessing
+8:26:53 PM: Skipping form detection
+8:26:53 PM: Post processing - header rules
+8:26:53 PM: Post processing - redirect rules
+8:26:53 PM: rendering chunks...
+8:26:53 PM: computing gzip size...
+8:26:53 PM: ../dist/public/index.html                   2.01 kB │ gzip:   0.77 kB
+8:26:53 PM: ../dist/public/assets/index-CCuUeQkU.css   69.60 kB │ gzip:  11.53 kB
+8:26:53 PM: ../dist/public/assets/index-DHOodLFA.js   953.52 kB │ gzip: 277.63 kB
+8:26:53 PM: 
+8:26:53 PM: (!) Some chunks are larger than 500 kB after minification. Consider:
+8:26:53 PM: - Using dynamic import() to code-split the application
+8:26:53 PM: - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+8:26:53 PM: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+8:26:53 PM: ✓ built in 6.74s
+8:26:53 PM: building server...
+8:26:53 PM:   dist/index.cjs  1.0mb ⚠️
+8:26:53 PM: ⚡ Done in 112ms
+8:26:53 PM: ​
+8:26:53 PM: (build.command completed in 8.1s)
+8:26:53 PM: ​
+8:26:53 PM: Deploy site                                                   
+8:26:53 PM: ────────────────────────────────────────────────────────────────
+8:26:53 PM: ​
+8:26:53 PM: Starting to deploy site from 'dist'
+8:26:53 PM: Calculating files to upload
+8:26:53 PM: 4 new file(s) to upload
+8:26:53 PM: 0 new function(s) to upload
+8:26:53 PM: Section completed: deploying
+8:26:53 PM: Site deploy was successfully initiated
+8:26:53 PM: ​
+8:26:53 PM: (Deploy site completed in 274ms)
+8:26:53 PM: ​
+8:26:53 PM: Netlify Build Complete                                        
+8:26:53 PM: ────────────────────────────────────────────────────────────────
+8:26:53 PM: ​
+8:26:53 PM: (Netlify Build completed in 8.6s)
+8:26:54 PM: Site is live ✨
+8:26:54 PM: Caching artifacts
+8:26:54 PM: Build script success
+8:26:54 PM: Section completed: building
+8:26:54 PM: Uploading Cache of size 67.6MB
+8:26:55 PM: Section completed: cleanup
+8:26:55 PM: Finished processing build request in 23.58s
